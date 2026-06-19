@@ -143,7 +143,7 @@
       background:
         linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.85)),
         url("assets/hero-bg.png") center/cover;
-      border-radius: 0 0 52px 52px;
+      border-radius: var(--radius) var(--radius) 52px 52px;
       z-index: -1;
       opacity: 1;
     }
@@ -472,7 +472,7 @@
       .hero::before {
         height: 420px;
         background-position: center center;
-        border-radius: 0 0 42px 42px;
+        border-radius: var(--radius) var(--radius) 42px 42px;
       }
 
       .brand h1 {
