@@ -29,9 +29,8 @@
       min-height: 100vh;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(111, 53, 245, 0.12), transparent 30%),
-        radial-gradient(circle at 80% 25%, rgba(8, 179, 156, 0.10), transparent 30%),
-        linear-gradient(180deg, #fbfaff 0%, #f4f6ff 100%);
+        linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.9)),
+        url("assets/hero-bg.png") center/cover fixed;
     }
 
     .page {
@@ -133,19 +132,6 @@
       position: relative;
       text-align: center;
       padding: 32px 0 24px;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: -20px 0 auto;
-      height: 520px;
-      background:
-        linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.85)),
-        url("assets/hero-bg-v2.png") center/cover;
-      border-radius: var(--radius) var(--radius) 52px 52px;
-      z-index: -1;
-      opacity: 1;
     }
 
     .pill {
@@ -469,12 +455,6 @@
         padding-inline: 14px;
       }
 
-      .hero::before {
-        height: 420px;
-        background-position: center center;
-        border-radius: var(--radius) var(--radius) 42px 42px;
-      }
-
       .brand h1 {
         font-size: 22px;
       }
@@ -647,15 +627,32 @@
       transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.02);
     }
-    .floor-btn[data-theme="purple"]:hover {
+    .floor-btn[data-theme="purple"]:not(:disabled):hover {
       background: var(--purple-light);
       color: var(--purple);
       border-color: var(--purple);
     }
-    .floor-btn[data-theme="green"]:hover {
+    .floor-btn[data-theme="green"]:not(:disabled):hover {
       background: var(--green-light);
       color: var(--green);
       border-color: var(--green);
+    }
+    .floor-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .floor-btn.selected[data-theme="purple"] {
+      background: var(--purple);
+      color: white;
+      border-color: var(--purple);
+      opacity: 1;
+    }
+    .floor-btn.selected[data-theme="green"] {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+      opacity: 1;
     }
 
     @keyframes fadeIn {
@@ -786,7 +783,7 @@
         This project is made by <strong style="color: var(--purple);">Copykat interns</strong>.
       </p>
       <p style="color: #8b90a8; font-size: 14px;">
-      Test 123
+        To edit this text, you can open the <code>index.html</code> file in the code editor, find this section, and edit the text directly!
       </p>
     </div>
   </div>
@@ -850,9 +847,19 @@
             floorBtn.setAttribute('data-theme', bldg.isGreen ? 'green' : 'purple');
             
             floorBtn.onclick = () => {
-               alert(`You selected ${floorBtn.textContent} in the ${bldg.name}`);
-               modal.classList.remove('active');
-               document.body.style.overflow = '';
+               const allBtns = floorGrid.querySelectorAll('.floor-btn');
+               allBtns.forEach(btn => {
+                 if (btn !== floorBtn) {
+                   btn.disabled = true;
+                 }
+               });
+               floorBtn.classList.add('selected');
+               
+               setTimeout(() => {
+                 alert(`You selected ${floorBtn.textContent} in the ${bldg.name}`);
+                 modal.classList.remove('active');
+                 document.body.style.overflow = '';
+               }, 600);
             };
             floorGrid.appendChild(floorBtn);
           });
