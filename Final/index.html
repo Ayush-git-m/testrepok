@@ -295,10 +295,10 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      background: rgba(255, 255, 255, 0.75);
+      background: var(--glass-nav);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--glass-border);
       border-top: 1px solid var(--glass-border-light);
       border-left: 1px solid var(--glass-border-light);
       padding: 18px 24px;
@@ -330,8 +330,8 @@
     .shortcut {
       padding: 8px 12px;
       border-radius: 11px;
-      color: #535876;
-      background: #f3f1fa;
+      color: var(--text);
+      background: var(--input-bg);
       font-weight: 800;
       white-space: nowrap;
     }
@@ -347,7 +347,7 @@
       position: relative;
       overflow: hidden;
       min-height: 335px;
-      background: linear-gradient(135deg, var(--glass-border-light) 0%, var(--glass-border) 100%);
+      background: var(--glass-card);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border-radius: var(--radius);
@@ -427,12 +427,13 @@
     }
 
     .building-card p {
-      color: var(--muted);
+      color: var(--text);
       max-width: 330px;
       line-height: 1.5;
       font-weight: 650;
       font-size: 17px;
       margin-bottom: 28px;
+      opacity: 0.9;
     }
 
     .building-img {
@@ -490,12 +491,12 @@
     }
 
     .feature-card {
-      background: linear-gradient(135deg, var(--glass-card) 0%, rgba(255, 255, 255, 0.55) 100%);
+      background: var(--glass-card);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      border-top: 1px solid var(--input-bg);
-      border-left: 1px solid var(--input-bg);
+      border: 1px solid var(--glass-border);
+      border-top: 1px solid var(--glass-border-light);
+      border-left: 1px solid var(--glass-border-light);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
       border-radius: 20px;
       padding: 22px;
@@ -525,10 +526,11 @@
     }
 
     .feature-card p {
-      color: var(--muted);
+      color: var(--text);
       font-size: 14px;
       line-height: 1.35;
       font-weight: 600;
+      opacity: 0.9;
     }
 
     .bottom-nav {
@@ -851,7 +853,7 @@
         <p>Choose a building to explore floors, rooms and facilities with ease.</p>
 
         <label class="search-box">
-          <span style="font-size: 24px; color:#68708f;">⌕</span>
+          <span style="font-size: 24px; color: var(--muted);">⌕</span>
           <input type="search" placeholder="Search for a room, lab, facility..." />
           <span class="shortcut">⌘ K</span>
         </label>
