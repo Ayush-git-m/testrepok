@@ -43,7 +43,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      height: 100lvh;
+      height: var(--app-height, 100lvh);
       background: url("./assets/hero-bg.png") center center/cover no-repeat;
       z-index: -2;
       pointer-events: none;
@@ -56,7 +56,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      height: 100lvh;
+      height: var(--app-height, 100lvh);
       background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.08));
       z-index: -1;
       pointer-events: none;
@@ -165,7 +165,7 @@
 
     .hero-text-glass {
       position: relative;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.45) 100%);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border-radius: 40px;
@@ -228,7 +228,7 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border: 1px solid rgba(255, 255, 255, 0.6);
@@ -241,7 +241,7 @@
     }
 
     .search-box:focus-within {
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.85);
       box-shadow: 0 12px 36px rgba(31, 38, 135, 0.12);
       transform: translateY(-2px);
     }
@@ -280,7 +280,7 @@
       position: relative;
       overflow: hidden;
       min-height: 335px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border-radius: var(--radius);
@@ -423,7 +423,7 @@
     }
 
     .feature-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.55) 100%);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border: 1px solid rgba(255, 255, 255, 0.6);
@@ -470,7 +470,7 @@
       bottom: 16px;
       transform: translateX(-50%);
       width: min(640px, calc(100% - 28px));
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border: 1px solid rgba(255, 255, 255, 0.8);
@@ -872,6 +872,23 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Fix for mobile background jumping when address bar hides/shows
+      const setFixedBackgroundHeight = () => {
+        const bgHeight = window.innerHeight;
+        document.documentElement.style.setProperty('--app-height', `${bgHeight}px`);
+      };
+      
+      let initialWidth = window.innerWidth;
+      setFixedBackgroundHeight();
+      
+      window.addEventListener('resize', () => {
+        // Only update on width change (e.g. rotation), ignore height changes from scroll
+        if (window.innerWidth !== initialWidth) {
+          initialWidth = window.innerWidth;
+          setFixedBackgroundHeight();
+        }
+      });
+
       const modal = document.getElementById('floor-modal');
       const closeBtn = document.getElementById('close-modal');
       const floorGrid = document.getElementById('floor-grid');
