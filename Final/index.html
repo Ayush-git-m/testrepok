@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Campus Go</title>
+  <script>if (localStorage.getItem("theme") === "dark") document.documentElement.setAttribute("data-theme", "dark");</script>
   <style>
     html {
       scroll-behavior: smooth;
@@ -15,7 +16,6 @@
       box-sizing: border-box;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-
     :root {
       --purple: #6d35f5;
       --purple-dark: #15123d;
@@ -27,7 +27,46 @@
       --card: rgba(255, 255, 255, 0.84);
       --shadow: 0 18px 45px rgba(61, 42, 125, 0.14);
       --radius: 24px;
+      
+      --bg-overlay: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.08));
+      --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.45) 100%);
+      --glass-border: rgba(255, 255, 255, 0.5);
+      --glass-border-light: rgba(255, 255, 255, 0.8);
+      --glass-card: rgba(255, 255, 255, 0.85);
+      --glass-nav: rgba(255, 255, 255, 0.8);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --title-color: #080c32;
+      --modal-overlay: rgba(21, 18, 61, 0.5);
+      --modal-bg: #fcfaf2;
+      --btn-bg: white;
+      --btn-border: rgba(34, 27, 84, 0.05);
     }
+    
+    [data-theme="dark"] {
+      --purple: #b388ff;
+      --purple-dark: #d8c2ff;
+      --purple-light: rgba(179, 136, 255, 0.2);
+      --green: #40c4b4;
+      --green-light: rgba(64, 196, 180, 0.2);
+      --text: #f0f2fb;
+      --muted: #a3a9c2;
+      --card: rgba(18, 24, 58, 0.6);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      
+      --bg-overlay: linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.7));
+      --glass-bg: rgba(18, 24, 58, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --glass-border-light: rgba(255, 255, 255, 0.1);
+      --glass-card: rgba(18, 24, 58, 0.9);
+      --glass-nav: rgba(18, 24, 58, 0.9);
+      --input-bg: rgba(255, 255, 255, 0.05);
+      --title-color: #f0f2fb;
+      --modal-overlay: rgba(0, 0, 0, 0.7);
+      --modal-bg: #12183a;
+      --btn-bg: rgba(255, 255, 255, 0.05);
+      --btn-border: rgba(255, 255, 255, 0.15);
+    }
+
 
     body {
       min-height: 100vh;
@@ -57,7 +96,7 @@
       width: 100vw;
       height: 100vh;
       height: var(--app-height, 100lvh);
-      background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.08));
+      background: var(--bg-overlay);
       z-index: -1;
       pointer-events: none;
     }
@@ -101,10 +140,38 @@
       height: 100%;
       object-fit: cover;
     }
-
-    /* Reserved ad slot in the header so it stays unobtrusive and never
-       crowds the logos on either side. Swap the placeholder text/box for
-       a real ad unit (e.g. an <ins> tag or ad-network script) when ready. */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--text);
+      transition: color 0.2s ease, transform 0.2s ease;
+      padding: 4px;
+    }
+    .theme-toggle:hover {
+      color: var(--purple);
+      transform: scale(1.1);
+    }
+    .theme-toggle svg { 
+      width: 24px; 
+      height: 24px; 
+      fill: none; 
+      stroke: currentColor; 
+      stroke-width: 2; 
+      stroke-linecap: round; 
+      stroke-linejoin: round; 
+    }
+    .theme-toggle .moon-icon { display: none; }
+    [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
+    [data-theme="dark"] .theme-toggle .moon-icon { display: block; }
+    [data-theme="dark"] .theme-toggle:hover { color: var(--green); }
     .header-ad {
       display: flex;
       align-items: center;
@@ -165,13 +232,13 @@
 
     .hero-text-glass {
       position: relative;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.45) 100%);
+      background: var(--glass-bg);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border-radius: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-top: 1px solid rgba(255, 255, 255, 0.8);
-      border-left: 1px solid rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--glass-border);
+      border-top: 1px solid var(--glass-border-light);
+      border-left: 1px solid var(--glass-border-light);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
       padding: 64px 40px 56px;
       margin: 0 auto 40px;
@@ -185,7 +252,7 @@
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
-      border: 1px solid rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--input-bg);
       color: var(--purple);
       padding: 10px 22px;
       border-radius: 999px;
@@ -202,7 +269,7 @@
     .hero h2 {
       max-width: 720px;
       margin: auto;
-      color: #080c32;
+      color: var(--title-color);
       font-size: clamp(42px, 8vw, 76px);
       line-height: 0.98;
       letter-spacing: -3px;
@@ -232,8 +299,8 @@
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border: 1px solid rgba(255, 255, 255, 0.6);
-      border-top: 1px solid rgba(255, 255, 255, 0.8);
-      border-left: 1px solid rgba(255, 255, 255, 0.8);
+      border-top: 1px solid var(--glass-border-light);
+      border-left: 1px solid var(--glass-border-light);
       padding: 18px 24px;
       border-radius: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
@@ -241,7 +308,7 @@
     }
 
     .search-box:focus-within {
-      background: rgba(255, 255, 255, 0.85);
+      background: var(--glass-card);
       box-shadow: 0 12px 36px rgba(31, 38, 135, 0.12);
       transform: translateY(-2px);
     }
@@ -280,13 +347,13 @@
       position: relative;
       overflow: hidden;
       min-height: 335px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+      background: linear-gradient(135deg, var(--glass-border-light) 0%, var(--glass-border) 100%);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border-radius: var(--radius);
       border: 1px solid rgba(255, 255, 255, 0.6);
-      border-top: 1px solid rgba(255, 255, 255, 0.9);
-      border-left: 1px solid rgba(255, 255, 255, 0.9);
+      border-top: 1px solid var(--input-bg);
+      border-left: 1px solid var(--input-bg);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
       padding: 26px;
       display: flex;
@@ -339,7 +406,7 @@
       right: 22px;
       z-index: 3;
       color: var(--purple);
-      background: rgba(255, 255, 255, 0.9);
+      background: var(--input-bg);
       backdrop-filter: blur(2px);
       border: 1px solid rgba(255, 255, 255, 1);
       padding: 9px 18px;
@@ -350,7 +417,7 @@
 
     .green .floor-badge {
       color: var(--green);
-      background: rgba(255, 255, 255, 0.9);
+      background: var(--input-bg);
     }
 
     .building-card h3 {
@@ -423,12 +490,12 @@
     }
 
     .feature-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.55) 100%);
+      background: linear-gradient(135deg, var(--glass-card) 0%, rgba(255, 255, 255, 0.55) 100%);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       border: 1px solid rgba(255, 255, 255, 0.6);
-      border-top: 1px solid rgba(255, 255, 255, 0.9);
-      border-left: 1px solid rgba(255, 255, 255, 0.9);
+      border-top: 1px solid var(--input-bg);
+      border-left: 1px solid var(--input-bg);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
       border-radius: 20px;
       padding: 22px;
@@ -470,37 +537,37 @@
       bottom: 16px;
       transform: translateX(-50%);
       width: min(640px, calc(100% - 28px));
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      border-top: 1px solid rgba(255, 255, 255, 1);
-      border-left: 1px solid rgba(255, 255, 255, 1);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
-      border-radius: 24px;
+      background: var(--glass-nav);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      box-shadow: 0 18px 45px rgba(18,24,58,.20);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      padding: 12px 10px;
+      padding: 10px;
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
       z-index: 20;
     }
-
     .nav-item {
       text-decoration: none;
-      color: #4c5270;
+      color: var(--muted);
       display: grid;
       place-items: center;
       gap: 4px;
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 4px;
+      border-radius: 14px;
+      transition: background .2s, color .2s;
     }
-
-    .nav-item span {
-      font-size: 24px;
-    }
-
+    .nav-item .icon { width: 21px; height: 21px; }
+    .icon { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    
     .nav-item.active {
-      color: var(--purple);
+      color: var(--purple-dark);
+      background: var(--purple-light);
     }
+
 
     @media (max-width: 850px) {
       .page {
@@ -509,9 +576,7 @@
 
       header {
         margin-bottom: 30px;
-      }
-
-      .header-ad {
+      }    .header-ad {
         max-width: 140px;
         height: 44px;
         font-size: 10px;
@@ -547,9 +612,7 @@
       .partner-logo {
         width: 40px;
         height: 40px;
-      }
-
-      .header-ad {
+      }    .header-ad {
         max-width: 90px;
         margin: 0 6px;
       }
@@ -643,12 +706,12 @@
       }
     }
 
-    /* Modal Styles */
+
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(21, 18, 61, 0.5);
+      background: var(--modal-overlay);
       backdrop-filter: blur(2px);
       z-index: 100;
       align-items: center;
@@ -660,7 +723,7 @@
       animation: fadeIn 0.3s ease;
     }
     .modal-content {
-      background: #fcfaf2;
+      background: var(--modal-bg);
       width: 100%;
       max-width: 420px;
       border-radius: var(--radius);
@@ -698,8 +761,8 @@
     .floor-btn {
       padding: 16px;
       border-radius: 999px;
-      border: 2px solid rgba(34, 27, 84, 0.05);
-      background: white;
+      border: 2px solid var(--btn-border);
+      background: var(--btn-bg);
       color: var(--text);
       font-weight: 700;
       font-size: 16px;
@@ -743,9 +806,21 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    
+
+    
+
   </style>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="icon-house" viewBox="0 0 24 24"><path d="M4 11.5L12 4l8 7.5"/><path d="M6.5 10v9.5h11V10"/><rect x="10" y="14" width="4" height="5.5"/></symbol>
+      <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.3"/><rect x="13" y="4" width="7" height="7" rx="1.3"/><rect x="4" y="13" width="7" height="7" rx="1.3"/><rect x="13" y="13" width="7" height="7" rx="1.3"/></symbol>
+      <symbol id="icon-map" viewBox="0 0 24 24"><path d="M3.5 6.2l6-2 6 2 5-1.7v13.3l-5 1.7-6-2-6 2z"/><line x1="9.5" y1="4.2" x2="9.5" y2="17.5"/><line x1="15.5" y1="6.2" x2="15.5" y2="19.5"/></symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.7" r="0.9" fill="currentColor" stroke="none"/></symbol>
+    </defs>
+  </svg>
   <main class="page">
     <header>
       <div class="brand">
@@ -758,8 +833,14 @@
 
       <div class="header-ad">Ad space</div>
 
-      <div class="partner-logo">
-        <img src="assets/copykat-icon.jpg" alt="CopyKat logo" />
+      <div class="header-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+        <div class="partner-logo">
+          <img src="assets/copykat-icon.jpg" alt="CopyKat logo" />
+        </div>
       </div>
     </header>
 
@@ -841,10 +922,10 @@
   </main>
 
   <nav class="bottom-nav">
-    <a href="#" class="nav-item active"><span>⌂</span>Home</a>
-    <a href="#buildings" class="nav-item"><span>▦</span>Buildings</a>
-    <a href="#" class="nav-item"><span>◇</span>Map</a>
-    <a href="#" class="nav-item"><span>ⓘ</span>About</a>
+    <a href="#" class="nav-item active"><svg class="icon"><use href="#icon-house"/></svg>Home</a>
+    <a href="#buildings" class="nav-item"><svg class="icon"><use href="#icon-grid"/></svg>Buildings</a>
+    <a href="#" class="nav-item"><svg class="icon"><use href="#icon-map"/></svg>Map</a>
+    <a href="about.html" class="nav-item"><svg class="icon"><use href="#icon-info"/></svg>About</a>
   </nav>
 
   <!-- Floor Selection Modal -->
@@ -855,24 +936,19 @@
       <div id="floor-grid" class="floor-grid"></div>
     </div>
   </div>
-
-  <!-- About Modal -->
-  <div id="about-modal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="close-btn" id="close-about-modal">&times;</button>
-      <h3>About Campus Go</h3>
-      <p style="color: var(--muted); font-size: 16px; line-height: 1.5; font-weight: 600; margin-bottom: 8px;">
-        This project is made by <strong style="color: var(--purple);">Copykat interns</strong>.
-      </p>
-      <p style="color: #8b90a8; font-size: 14px;">
-        To edit this text, you can open the <code>index.html</code> file in the code editor, find this section, and edit the text directly!
-      </p>
-    </div>
-  </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Fix for mobile background jumping when address bar hides/shows
+      
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      }
+
       const setFixedBackgroundHeight = () => {
         const bgHeight = window.innerHeight;
         document.documentElement.style.setProperty('--app-height', `${bgHeight}px`);
@@ -882,7 +958,7 @@
       setFixedBackgroundHeight();
       
       window.addEventListener('resize', () => {
-        // Only update on width change (e.g. rotation), ignore height changes from scroll
+        
         if (window.innerWidth !== initialWidth) {
           initialWidth = window.innerWidth;
           setFixedBackgroundHeight();
@@ -893,28 +969,6 @@
       const closeBtn = document.getElementById('close-modal');
       const floorGrid = document.getElementById('floor-grid');
       const modalTitle = document.getElementById('modal-title');
-
-      const aboutModal = document.getElementById('about-modal');
-      const closeAboutBtn = document.getElementById('close-about-modal');
-      const aboutNavBtn = document.querySelector('a.nav-item:last-child');
-
-      aboutNavBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        aboutModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-
-      closeAboutBtn.addEventListener('click', () => {
-        aboutModal.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-
-      aboutModal.addEventListener('click', (e) => {
-        if (e.target === aboutModal) {
-          aboutModal.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      });
 
       const buildingData = {
         'Explore Main Building →': { 
@@ -942,7 +996,7 @@
             floorBtn.className = 'floor-btn';
             floorBtn.textContent = floorName;
             
-            // Set theme coloring based on the building
+          
             floorBtn.setAttribute('data-theme', bldg.isGreen ? 'green' : 'purple');
             
             floorBtn.onclick = () => {
